@@ -196,12 +196,12 @@ a:visited {
 	border: solid;
 	color: #2A322B; 
 }
-.kuva{
+.kuva{							/* Kaikki peruskuvat */
   width: 100%;
   max-width: 240px;
   height: auto;
 }
-.kuva2{
+.kuva2{							/* Takakansikuvat Akuissa */
 	width: auto; 
 	margin: auto;
 	justify-content:left;
@@ -210,7 +210,7 @@ a:visited {
 	padding: 10px;
 }
 
-.erikoiskuva {
+.erikoiskuva {					/* Erikoisnumerot Texeissa ja gameboykuvat */
   width: 100%;
   max-width: 500px;
   height: auto;
@@ -353,11 +353,27 @@ p{
   .menulaatikot {
     padding: 20px 15px;
   }
+  
+  .universaltable {
+    font-size: 0.8rem;
+  }
+
+  .universaltable th,
+  .universaltable td {
+    padding: 6px;
+  }
 
   /* Make images slightly smaller */
-  .kuva {
-    max-width: 180px;
+  .kuva {						/* Kaikki peruskuvat */
+    max-width: 120px;
   }
+.kuva2{							/* Takakansikuvat Akuissa */
+	max-width: 400px;
+}
+
+.erikoiskuva {					/* Erikoisnumerot Texeissa ja gameboykuvat */
+  max-width: 120px;
+}
 }
 
 @media (min-width: 641px) and (max-width: 1007px) {
