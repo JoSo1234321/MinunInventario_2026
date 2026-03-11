@@ -19,17 +19,25 @@
 	<div id="pageWrapper">
     <!-- Header like Inventaario -->
     <div id="headerwrapper" class="center nimi">
-        <h1>NOTES</h1>
+        <h1>MUISTIO</h1>
     </div>
 	<p class="linkright"><a href="index.html">Menu</a></p>
 	</div>
 	<br><br>
+	
+	<!-- Container for the pass key -->
+	<div class="container menulaatikot muistio-container">
+	  <div class="menutext muistio-text">
+		<input type="password" id="passKeyInput" placeholder="Anna salasana">
+		<button id="unlockBtn">Avaa</button>
+	  </div>
+	</div>
 
 	<!-- Container for the input box -->
 	<div class="container menulaatikot muistio-container">
 		<div class="menutext muistio-text">
-			<textarea id="noteInput" placeholder="Write a note" rows="5"></textarea>
-			<button id="addNote">Add</button>
+			<textarea id="noteInput" placeholder="Kirjoita muistiinpano" rows="5" disabled></textarea>
+			<button id="addNote" disabled>OK</button>
 		</div>
 	</div>
 
@@ -61,6 +69,35 @@ const input = document.getElementById("noteInput");
 const addButton = document.getElementById("addNote");
 const notesList = document.getElementById("notesList");
 
+const PASS_KEY = "Jonne"; // Replace with your chosen pass key
+
+const passInput = document.getElementById("passKeyInput");
+const unlockBtn = document.getElementById("unlockBtn");
+
+passInput.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault(); // prevent default behavior (like submitting a form)
+    unlockBtn.click();      // trigger the unlock button
+  }
+});
+
+let passEntered = false; // track whether pass key has been entered
+
+// Unlock notes if correct pass key is entered
+unlockBtn.onclick = () => {
+  if (passInput.value === PASS_KEY) {
+	passEntered = true;
+    document.getElementById("noteInput").disabled = false;
+    addButton.disabled = false;
+    passInput.disabled = true;
+    unlockBtn.disabled = true;
+	
+	document.querySelectorAll("#notesList button").forEach(btn => btn.disabled = false);
+  } else {
+    alert("Anna oikea salasana!");
+  }
+};
+
 // Press Enter to add note or shift + enter for new line
 input.addEventListener("keydown", function(event) {
   if (event.key === "Enter" && !event.shiftKey) {
@@ -81,6 +118,7 @@ async function loadNotes() {
 
     const del = document.createElement("button");
     del.textContent = "X";
+	del.disabled = !passEntered;
 
     del.onclick = async () => {
       await deleteDoc(doc(db, "notes", docItem.id));
