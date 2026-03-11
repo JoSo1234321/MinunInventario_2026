@@ -40,6 +40,77 @@ td, th {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   border: 3px solid rgba(0, 0, 0, 1);
 }
+/*	Jos haluat palauttaa muistiosivun valkoiseksi
+
+html.note-bg, html.note-bg body {
+  background: white;
+}
+
+html.note-bg #headerwrapper {
+  background: white;
+}
+*/
+
+
+.muistio-container {
+    justify-content: center;
+}
+
+
+.muistio-text {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.muistio-text #addNote {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.muistio-notes {
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding-left: 0;
+}
+
+.muistio-notes li {
+    margin: 8px 0;
+    padding: 8px 40px 8px 8px; /* delete nappulan tila */
+    list-style: none;
+    background: #f2f2f2;
+    border-radius: 5px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    position: relative;
+}
+
+.muistio-notes li button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 6px;
+    cursor: pointer;
+}
+
+#noteInput {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+  resize: vertical;
+}
 
 h1 {
   color: white;

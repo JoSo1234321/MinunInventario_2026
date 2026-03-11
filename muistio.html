@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html class="note-bg">
+	<head>
+		<meta charset="utf-8">
+		<meta name="author"
+		content="Jonne Soininen">
+		<meta name="viewport"
+		content="width=device-width, initial-scale=1.0">
+		<meta name="keywords"
+		content="HTML,CSS">
+		<!-- osoite tyylitiedostoon -->
+		<link rel="stylesheet" href="CSS/universalstyles.css">
+		<title>Muistio</title>
+		<link rel="icon" href="Images/favicon.jpg">
+	</head>
+	<body>
+
+	<!-- Page wrapper -->
+	<div id="pageWrapper">
+    <!-- Header like Inventaario -->
+    <div id="headerwrapper" class="center nimi">
+        <h1>NOTES</h1>
+    </div>
+	<p class="linkright"><a href="index.html">Menu</a></p>
+	</div>
+	<br><br>
+
+	<!-- Container for the input box -->
+	<div class="container menulaatikot muistio-container">
+		<div class="menutext muistio-text">
+			<textarea id="noteInput" placeholder="Write a note" rows="5"></textarea>
+			<button id="addNote">Add</button>
+		</div>
+	</div>
+
+	<!-- Container for the notes list -->
+	<div class="container menulaatikot muistio-container">
+		<ul id="notesList" class="muistio-notes"></ul>
+	</div>
+
+	<!-- Firebase and notes script -->
+	<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { query, orderBy } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD3DR-1SmKYXE66V4fMpg0G6SR7yYq5x9w",
+  authDomain: "inventaariomuistio.firebaseapp.com",
+  projectId: "inventaariomuistio",
+  storageBucket: "inventaariomuistio.firebasestorage.app",
+  messagingSenderId: "210041812949",
+  appId: "1:210041812949:web:ee90adda0b255a63bbaf5c"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const input = document.getElementById("noteInput");
+const addButton = document.getElementById("addNote");
+const notesList = document.getElementById("notesList");
+
+// Press Enter to add note or shift + enter for new line
+input.addEventListener("keydown", function(event) {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault(); // prevent new line
+    addButton.click();
+  }
+});
+
+async function loadNotes() {
+  notesList.innerHTML = "";
+
+  const q = query(collection(db, "notes"), orderBy("createdAt", "asc"));
+  const querySnapshot = await getDocs(q);
+
+  querySnapshot.forEach((docItem) => {
+    const li = document.createElement("li");
+    li.textContent = docItem.data().text;
+
+    const del = document.createElement("button");
+    del.textContent = "X";
+
+    del.onclick = async () => {
+      await deleteDoc(doc(db, "notes", docItem.id));
+      loadNotes();
+    };
+
+    li.appendChild(del);
+    notesList.appendChild(li);
+  });
+}
+
+addButton.onclick = async () => {
+
+  if (input.value.trim() === "") return;
+
+  await addDoc(collection(db, "notes"), {
+    text: input.value, createdAt: new Date()
+  });
+
+  input.value = "";
+  loadNotes();
+};
+
+loadNotes();
+
+</script>
+
+	</body>
+</html>
